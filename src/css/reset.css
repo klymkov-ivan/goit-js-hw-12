@@ -8,6 +8,10 @@ p {
   margin: 0;
 }
 
+* {
+  box-sizing: border-box;
+}
+
 p:last-child {
   margin-bottom: 0;
 }
@@ -24,6 +28,12 @@ a {
 }
 
 button {
+  background: none;
+  border: none;
+  padding: 0;
+  margin: 0;
+  font: inherit;
+  color: inherit;
   cursor: pointer;
 }
 
@@ -31,4 +41,14 @@ img {
   display: block;
   max-width: 100%;
   height: auto;
+}
+
+input {
+  background: none;
+  border: none;
+  padding: 0;
+  margin: 0;
+  font: inherit;
+  color: inherit;
+  outline: none;
 }
