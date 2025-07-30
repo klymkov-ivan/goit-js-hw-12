@@ -64,18 +64,3 @@ export function showLoadMoreButton() {
 export function hideLoadMoreButton() {
   loadMoreBtn.classList.add('hidden');
 }
-
-export function lengthCheck(length) {
-  if (length < 12) {
-    iziToast.show({
-      message: "We're sorry, but you've reached the end of search results.",
-      position: 'topCenter',
-      color: '#ef4040',
-      messageColor: '#fff',
-      titleColor: '#fff',
-    });
-    hideLoadMoreButton();
-  } else {
-    showLoadMoreButton();
-  }
-}

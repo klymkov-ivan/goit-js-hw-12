@@ -9,7 +9,7 @@ export async function getImagesByQuery(query, page) {
     safesearch: true,
     q: query,
     page: page,
-    per_page: '12',
+    per_page: '15',
   });
 
   const response = await axios(`${baseURL}${searchParams}`);

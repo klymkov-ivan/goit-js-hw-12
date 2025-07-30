@@ -6,7 +6,6 @@ import {
   hideLoader,
   showLoadMoreButton,
   hideLoadMoreButton,
-  lengthCheck,
 } from './js/render-functions';
 
 import iziToast from 'izitoast';
@@ -14,12 +13,29 @@ import 'izitoast/dist/css/iziToast.min.css';
 import './css/styles.css';
 
 const form = document.querySelector('form');
-form.addEventListener('submit', handleGallery);
-
 const loadMoreBtn = document.querySelector('#load-btn');
+
+form.addEventListener('submit', handleGallery);
+loadMoreBtn.addEventListener('click', handleLoadMore);
 
 let page = 1;
 let currentQuery = '';
+const perPage = 15;
+
+function lengthCheck(totalHits) {
+  if (page * perPage >= totalHits) {
+    iziToast.show({
+      message: "We're sorry, but you've reached the end of search results.",
+      position: 'topCenter',
+      color: '#ef4040',
+      messageColor: '#fff',
+      titleColor: '#fff',
+    });
+    hideLoadMoreButton();
+  } else {
+    showLoadMoreButton();
+  }
+}
 
 async function handleGallery(event) {
   event.preventDefault();
@@ -60,16 +76,22 @@ async function handleGallery(event) {
     }
 
     createGallery(data.hits);
-    console.log(data.totalHits);
-    lengthCheck(data.hits.length);
+    lengthCheck(data.totalHits);
   } catch (error) {
     console.log(error);
+    iziToast.show({
+      message: 'Sorry, something went wrong.',
+      position: 'topCenter',
+      color: '#ef4040',
+      messageColor: '#fff',
+      titleColor: '#fff',
+    });
   } finally {
     hideLoader();
   }
 }
 
-loadMoreBtn.addEventListener('click', async () => {
+async function handleLoadMore() {
   page += 1;
   hideLoadMoreButton();
   showLoader();
@@ -82,23 +104,16 @@ loadMoreBtn.addEventListener('click', async () => {
     const firstCard = document.querySelector('.gallery-item');
     if (firstCard) {
       const cardHeight = firstCard.getBoundingClientRect().height;
-
       window.scrollBy({
         top: cardHeight * 2,
         behavior: 'smooth',
       });
     }
 
-    if (data.hits.length < 12 || page * 12 >= data.totalHits) {
-      hideLoadMoreButton();
-    } else {
-      showLoadMoreButton();
-    }
-
-    lengthCheck(data.hits.length);
+    lengthCheck(data.totalHits);
   } catch (error) {
     console.log(error);
   } finally {
     hideLoader();
   }
-});
+}
